@@ -827,6 +827,13 @@ func (s *Store) GetRecord(ctx context.Context, uid models.UID) ([]models.Recorde
 	return sessionRecord, count, nil
 }
 
+func (s *Store) UpdateUser(ctx context.Context, username, email, tenant string) error {
+	if _, err := s.db.Collection("users").UpdateOne(ctx, bson.M{"tenant_id": tenant}, bson.M{"$set": bson.M{"username": username, "email": email}}); err != nil {
+		return err
+	}
+	return nil
+}
+
 func buildFilterQuery(filters []models.Filter) ([]bson.M, error) {
 	var queryMatch []bson.M
 	var queryFilter []bson.M
