@@ -130,6 +130,7 @@ func (s *service) AuthUser(ctx context.Context, req models.UserAuthRequest) (*mo
 			Name:   user.Name,
 			User:   user.Username,
 			Tenant: user.TenantID,
+			Email:  user.Email,
 		}, nil
 	}
 
