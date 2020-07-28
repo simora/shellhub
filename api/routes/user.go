@@ -2,8 +2,9 @@ package routes
 
 import (
 	"net/http"
-	"fmt"
 
+	"crypto/sha256"
+	"encoding/hex"
 	"github.com/shellhub-io/shellhub/api/apicontext"
 	"github.com/shellhub-io/shellhub/api/user"
 )
@@ -16,7 +17,7 @@ func UpdateUser(c apicontext.Context) error {
 
 	var req struct {
 		Username string `json:"username"`
-		Email string `json:"email"`
+		Email    string `json:"email"`
 		Password string `json:"password"`
 	}
 	if err := c.Bind(&req); err != nil {
@@ -27,14 +28,16 @@ func UpdateUser(c apicontext.Context) error {
 	if v := c.Tenant(); v != nil {
 		tenant = v.ID
 	}
-
+	var password string = ""
 	if req.Password != "" {
-		fmt.Println("User wants to change the password")
+		sum := sha256.Sum256([]byte(req.Password))
+		var sum_byte []byte = sum[:]
+		password = hex.EncodeToString(sum_byte)
 	}
-	
+
 	svc := user.NewService(c.Store())
 
-	if err := svc.UpdateDataUser(c.Ctx(), req.Username, req.Email, tenant); err != nil {
+	if err := svc.UpdateDataUser(c.Ctx(), req.Username, req.Email, password, tenant); err != nil {
 		if err == user.ErrUnauthorized {
 			return c.NoContent(http.StatusForbidden)
 		}

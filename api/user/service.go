@@ -10,7 +10,7 @@ import (
 var ErrUnauthorized = errors.New("unauthorized")
 
 type Service interface {
-	UpdateDataUser(ctx context.Context, usernane, email, tenant string) error
+	UpdateDataUser(ctx context.Context, username, email, password, tenant string) error
 }
 
 type service struct {
@@ -21,6 +21,6 @@ func NewService(store store.Store) Service {
 	return &service{store}
 }
 
-func (s *service) UpdateDataUser(ctx context.Context, username, email, tenant string) error {
-	return s.store.UpdateUser(ctx, username, email, tenant)
+func (s *service) UpdateDataUser(ctx context.Context, username, email, password, tenant string) error {
+	return s.store.UpdateUser(ctx, username, email, password, tenant)
 }
