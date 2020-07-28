@@ -54,7 +54,7 @@ export default {
       items: [
         {
           title: 'Profile',
-          path: '/settings',
+          path: '/settings/profile',
         },
       ],
     };

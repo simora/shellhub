@@ -67,14 +67,14 @@ const router = new Router({
     {
       path: '/settings',
       name: 'settings',
-      component: () => import('./../views/Settings.vue'),
+      component: () => import(/* webpackChunkName: 'devices' */ './../views/Settings.vue'),
       redirect: {
-        name: 'Settings',
+        name: 'profileSettings',
       },
       children: [
         {
-          path: '',
-          name: 'SettingProfile',
+          path: 'profile',
+          name: 'profileSettings',
           component: () => import('./../components/setting/SettingProfile.vue'),
         },
       ],
