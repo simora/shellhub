@@ -137,7 +137,8 @@
                 <v-text-field
                   v-model="password"
                   label="password"
-                  type="text"
+                  type="password"
+                  class="mb-4"
                   :error-messages="errors"
                   required
                   :disabled="!editPasswordStatus"
