@@ -52,7 +52,7 @@
 
           <ValidationObserver
             ref="obs"
-            v-slot="{ invalid, validated, passes }"
+            v-slot="{ validated, passes }"
           >
             <div
               class="mt-6 pl-4 pr-4"
@@ -65,7 +65,6 @@
                 <v-text-field
                   v-model="username"
                   label="Username"
-                  type="text"
                   :error-messages="errors"
                   required
                   :disabled="!editDataStatus"
@@ -81,7 +80,6 @@
                   v-model="email"
                   class="mt-1 mb-4"
                   label="E-mail"
-                  type="text"
                   :error-messages="errors"
                   required
                   :disabled="!editDataStatus"
@@ -111,7 +109,7 @@
                 <v-btn
                   class="mr-2 mt-4"
                   outlined
-                  @click="passes(updateData('data'))"
+                  @click="passes(updateData)"
                 >
                   Save
                 </v-btn>
@@ -168,7 +166,7 @@
                 <v-btn
                   class="mr-2"
                   outlined
-                  @click="passes(updateData('password'))"
+                  @click="passes(updatePassword)"
                 >
                   Save
                 </v-btn>
@@ -223,24 +221,33 @@ export default {
       this.email = this.$store.getters['auth/email'];
     },
 
-    enableEdit(field) {
-      if (field === 'data') {
+    enableEdit() {
+      if (this.editDataStatus) {
         this.editDataStatus = !this.editDataStatus;
-      } else if (field === 'password') {
+      } else if (this.editPasswordStatus) {
         this.editPasswordStatus = !this.editPasswordStatus;
       }
     },
 
-    updateData(field) {
+    updateData() {
       const data = {
         username: this.username,
         email: this.email,
+      };
+
+      this.$store.dispatch('users/put', data);
+
+      this.enableEdit();
+    },
+
+    updatePassword() {
+      const data = {
         password: this.password,
       };
 
       this.$store.dispatch('users/put', data);
 
-      this.enableEdit(field);
+      this.enableEdit();
     },
   },
 
