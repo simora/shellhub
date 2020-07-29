@@ -175,6 +175,12 @@
           </ValidationObserver>
         </v-col>
       </v-row>
+      <v-snackbar
+        v-model="copySnack"
+        :timeout="3000"
+      >
+        Tenant ID copied do clipboard
+      </v-snackbar>
     </v-container>
   </v-form>
 </template>
@@ -202,6 +208,7 @@ export default {
       editDataStatus: false,
       editPasswordStatus: false,
       show: false,
+      copySnack: false,
     };
   },
 
