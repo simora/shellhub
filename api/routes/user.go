@@ -28,16 +28,15 @@ func UpdateUser(c apicontext.Context) error {
 	if v := c.Tenant(); v != nil {
 		tenant = v.ID
 	}
-	var password string = ""
 	if req.Password != "" {
 		sum := sha256.Sum256([]byte(req.Password))
 		var sum_byte []byte = sum[:]
-		password = hex.EncodeToString(sum_byte)
+		req.Password = hex.EncodeToString(sum_byte)
 	}
 
 	svc := user.NewService(c.Store())
 
-	if err := svc.UpdateDataUser(c.Ctx(), req.Username, req.Email, password, tenant); err != nil {
+	if err := svc.UpdateDataUser(c.Ctx(), req.Username, req.Email, req.Password, tenant); err != nil {
 		if err == user.ErrUnauthorized {
 			return c.NoContent(http.StatusForbidden)
 		}
