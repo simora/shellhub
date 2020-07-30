@@ -17,10 +17,12 @@ type Agent struct {
 	Info     *models.DeviceInfo
 }
 
-func NewAgent() (*Agent, error) {
-	identity, err := getDeviceIdentity()
-	if err != nil {
-		return nil, err
+func NewAgent(identity string) (*Agent, error) {
+	if identity nil {
+		identity, err := getDeviceIdentity()
+		if err != nil {
+			return nil, err
+		}
 	}
 
 	info, err := getDeviceInfo()

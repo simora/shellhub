@@ -10,6 +10,7 @@ import (
 	"os"
 	"strings"
 	"time"
+	"regexp"
 
 	"github.com/Masterminds/semver"
 	"github.com/gorilla/mux"
@@ -31,6 +32,7 @@ type ConfigOptions struct {
 	ServerAddress string `envconfig:"server_address"`
 	PrivateKey    string `envconfig:"private_key"`
 	TenantID      string `envconfig:"tenant_id"`
+	Identity      string `envconfig:"identity"`
 }
 
 type Information struct {
@@ -42,6 +44,11 @@ func main() {
 
 	err := envconfig.Process("", &opts)
 	if err != nil {
+		logrus.Panic(err)
+	}
+
+	var identityPattern = regexp.MustCompile(`^[a-zA-Z0-9\-]+`)
+	if !identityPattern.MatchString(opts.Identity) {
 		logrus.Panic(err)
 	}
 
@@ -76,7 +83,7 @@ func main() {
 		logrus.WithFields(logrus.Fields{"err": err}).Fatal("Failed to get endpoints")
 	}
 
-	agent, err := NewAgent()
+	agent, err := NewAgent(opts.Identity)
 	if err != nil {
 		logrus.Fatal(err)
 	}
