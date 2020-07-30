@@ -63,7 +63,7 @@ func main() {
 	publicAPI.POST(routes.AuthUserURL, apicontext.Handler(routes.AuthUser))
 	publicAPI.POST(routes.AuthUserURLV2, apicontext.Handler(routes.AuthUser))
 
-	publicAPI.PUT(routes.UpdateUserURL, apicontext.Handler(routes.UpdateUser))
+	publicAPI.PATCH(routes.UpdateUserURL, apicontext.Handler(routes.UpdateUser))
 
 	publicAPI.GET(routes.GetDeviceListURL, apicontext.Handler(routes.GetDeviceList))
 	publicAPI.GET(routes.GetDeviceURL, apicontext.Handler(routes.GetDevice))
